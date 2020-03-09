@@ -1,38 +1,126 @@
-.App {
-  text-align: center;
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  color: #232334;
+  background-color: #f9f9f9;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  margin-top: 80px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.navbar_right {
+  text-align: right;
+}
+
+/* login */
+.main_container {
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  background-color: #fafafa;
 }
 
-.App-link {
-  color: #61dafb;
+.login_container {
+  max-width: 700px;
+  width: 80%;
+  display: flex;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login_bnr {
+  width: 40%;
+
+}
+
+.login_bnr img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.heading {
+  font-size: 26px;
+  color: #e91e63;
+  font-weight: 700;
+  margin-top: 0px;
+}
+
+.login_form_box {
+  width: 60%;
+  padding: 35px 25px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.form_group {
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.input_group {
+  display: flex;
+  width: 100%;
+  border-bottom: 1.4px solid #311b92;
+  align-items: center;
+}
+
+.form_group p {
+  font-size: 14px;
+  color: #e91e63;
+  margin-top: 0px;
+  line-height: 1.6;
+}
+
+.input-control {
+  width: 100%;
+  border-radius: 0px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 10px 0px;
+  font-family: inherit;
+  color: #311b92;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile_desc {
+  display: flex;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.MuiCircularProgress-root {
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  z-index: 9999999;
 }
