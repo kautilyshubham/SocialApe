@@ -7,7 +7,9 @@ import {
   UNLIKE_SCREAM,
   SET_SCREAMS,
   DELETE_SCREAM,
-  POST_SCREAM
+  POST_SCREAM,
+  ADD_COMMENT,
+  SET_SCREAM
 } from "../store/types";
 
 // get all screams
@@ -20,6 +22,21 @@ export const $getAllScreams = success => dispatch => {
       success(res);
       dispatch({ type: SET_SCREAMS, payload: res.data });
       dispatch({ type: LOADING_UI, payload: false });
+    })
+    .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
+      console.log(err);
+    });
+};
+
+// get one scream
+export const $getScream = (screamId, success) => dispatch => {
+  const url = `${urlConst.scream_url}${screamId}`;
+  instance
+    .get(url)
+    .then(res => {
+      dispatch({ type: SET_SCREAM, payload: res.data });
+      success(res);
     })
     .catch(err => {
       console.log(err);
@@ -55,6 +72,25 @@ export const $likeScream = (screamId, success) => dispatch => {
       success();
     })
     .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
+      console.log(err);
+    });
+};
+
+// comment on  a screams
+export const $addComment = (screamId, data, success) => dispatch => {
+  dispatch({ type: LOADING_UI, payload: true });
+  const url = `${urlConst.scream_url}${screamId}/comment`;
+  instance
+    .post(url, data)
+    .then(res => {
+      dispatch({ type: ADD_COMMENT, payload: res.data });
+      dispatch({ type: LOADING_UI, payload: false });
+
+      success();
+    })
+    .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
       console.log(err);
     });
 };
@@ -73,6 +109,7 @@ export const $unlikeScream = (screamId, success) => dispatch => {
       success();
     })
     .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
       console.log(err);
     });
 };
@@ -90,6 +127,7 @@ export const $deleteScream = (screamId, success) => dispatch => {
       success();
     })
     .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
       console.log(err);
     });
 };

@@ -4,5 +4,6 @@ export default {
   login_url: "login/",
   signup_url: "signup/",
   user_url: "user/",
-  upload_img: "user/image"
+  upload_img: "user/image",
+  notifications_url: "notifications/"
 };

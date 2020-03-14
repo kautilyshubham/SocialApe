@@ -23,7 +23,6 @@ let authenticated;
 const token = localStorage.FBToken;
 if (token) {
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken.exp * 1000 < Date.now());
   if (decodedToken.exp * 1000 < Date.now()) {
     window.location.href = "/login";
     authenticated = false;

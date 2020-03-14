@@ -22,7 +22,6 @@ class Navbar extends Component {
     isPostScream: false
   };
   render() {
-    console.log(this.props.authenticated, "autheticated");
     return (
       <>
         <AppBar>

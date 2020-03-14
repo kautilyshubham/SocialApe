@@ -49,7 +49,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Profile = props => {
-  const { handle, imageUrl, bio, location, website, createdAt } = props;
+  const {
+    handle,
+    imageUrl,
+    bio,
+    location,
+    website,
+    createdAt
+  } = props.userData[keyConst.CREDENTIALS];
   const classes = useStyles();
 
   const [editProfile, setEditProfile] = useState(false);
@@ -195,6 +202,7 @@ const Profile = props => {
 
 const mapStateToProps = state => {
   return {
+    userData: state.user,
     isLoading: state.UI.loading
   };
 };

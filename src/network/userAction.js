@@ -10,6 +10,8 @@ import {
 } from "../store/types";
 
 export const $userLogin = (userData, success) => dispatch => {
+  dispatch({ type: LOADING_UI, payload: true });
+
   instance
     .post(urlConst.login_url, userData, keyConst.Raw_Header)
     .then(res => {
@@ -17,26 +19,33 @@ export const $userLogin = (userData, success) => dispatch => {
         localStorage.setItem("FBToken", res.data[keyConst.token]);
         success(res);
         dispatch({ type: SET_AUTHENTICATED });
+        dispatch({ type: LOADING_UI, payload: false });
       }
     })
     .catch(err => {
       console.log(err);
+      dispatch({ type: LOADING_UI, payload: false });
     });
 };
 
 export const $userSignup = (userData, success) => dispatch => {
+  dispatch({ type: LOADING_UI, payload: true });
+
   instance
     .post(urlConst.signup_url, userData)
     .then(res => {
       localStorage.setItem("FBToken", res.data[keyConst.token]);
       success(res);
       dispatch({ type: SET_AUTHENTICATED });
+      dispatch({ type: LOADING_UI, payload: false });
     })
     .catch(err => {
       console.log(err);
+      dispatch({ type: LOADING_UI, payload: false });
     });
 };
 export const $uploadProfileImage = (image, success) => dispatch => {
+  dispatch({ type: LOADING_UI, payload: true });
   instance
     .post(urlConst.upload_img, image)
     .then(res => {
@@ -47,10 +56,13 @@ export const $uploadProfileImage = (image, success) => dispatch => {
           })
         );
       }
+      dispatch({ type: LOADING_UI, payload: false });
+
       success(res);
     })
     .catch(err => {
       console.log(err);
+      dispatch({ type: LOADING_UI, payload: false });
     });
 };
 
@@ -65,6 +77,7 @@ export const $editUserDetail = (userDetail, success) => {
       })
       .catch(err => {
         console.log(err);
+        dispatch({ type: LOADING_UI, payload: false });
       });
   };
 };
@@ -86,5 +99,14 @@ export const $logoutUser = success => dispatch => {
 };
 
 // notifications
-
+export const $getAllNotifications = success => dispatch => {
+  instance
+    .get(urlConst.notifications_url)
+    .then(res => {
+      success(res);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 // read notifications

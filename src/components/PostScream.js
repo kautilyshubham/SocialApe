@@ -23,7 +23,6 @@ const PostScream = props => {
     setError(false);
   };
 
-  const postImage = () => {};
   const postScreamHandler = () => {
     if (postText) {
       let screamData = {
