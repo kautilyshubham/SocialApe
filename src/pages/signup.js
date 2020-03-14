@@ -51,7 +51,7 @@ class Signup extends Component {
     } else if (passwordCheck !== true) {
       this.setState({ error: passwordCheck });
       return false;
-    } else if (!isEmpty(this.state.handle)) {
+    } else if (isEmpty(this.state.handle)) {
       let err = {};
       err["handle"] = "Handle required.";
       this.setState({ error: err });
@@ -63,7 +63,6 @@ class Signup extends Component {
 
   onSubmitHandler = () => {
     const isValid = this.checkError();
-    console.log(isValid);
     const data = {
       email: this.state.email,
       password: this.state.password,
@@ -71,7 +70,7 @@ class Signup extends Component {
       handle: this.state.handle
     };
     if (isValid) {
-      $userSignup(data, res => {
+      this.props.$userSignup(data, res => {
         console.log(res, "signup");
         this.props.history.push("/");
       });
@@ -167,4 +166,4 @@ class Signup extends Component {
   }
 }
 
-export default connect(null, $userSignup)(Signup);
+export default connect(null, { $userSignup })(Signup);
