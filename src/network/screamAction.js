@@ -131,3 +131,19 @@ export const $deleteScream = (screamId, success) => dispatch => {
       console.log(err);
     });
 };
+
+// others user profile
+export const $getOtherProfile = (userHandle, success) => dispatch => {
+  dispatch({ type: LOADING_UI, payload: true });
+  const url = `${urlConst.user_url}${userHandle}`;
+  instance
+    .get(url)
+    .then(res => {
+      success(res.data);
+      dispatch({ type: LOADING_UI, payload: false });
+    })
+    .catch(err => {
+      dispatch({ type: LOADING_UI, payload: false });
+      console.log(err);
+    });
+};

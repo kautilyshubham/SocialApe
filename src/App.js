@@ -9,6 +9,7 @@ import PropsTypes from "prop-types";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import User from "./pages/user";
 import Navbar from "./components/Navbar";
 import Mytheme from "./utils/theme";
 import jwtDecode from "jwt-decode";
@@ -60,6 +61,7 @@ function App(props) {
                 component={Signup}
                 authenticated={props.authenticated}
               />
+              <Route exact path="/users/:handle" component={User} />
             </Switch>
           </div>
         </Router>
