@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Grid } from "@material-ui/core";
 import { $getAllScreams } from "../network/screamAction";
-import { $getUserData, $getAllNotifications } from "../network/userAction";
+import { $getUserData } from "../network/userAction";
 import Scream from "../components/Scream";
 import { connect } from "react-redux";
 import keyConst from "../network/keyConst";
@@ -22,6 +22,9 @@ class Home extends Component {
     if (this.props.screamsData.screams) {
       this.setState({ screams: this.props.screamsData.screams });
     }
+    if (this.props.userData.authenticated) {
+      this.props.$getUserData(res => {});
+    }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -29,11 +32,10 @@ class Home extends Component {
     ) {
       if (this.props.userData.authenticated) {
         this.props.$getUserData(res => {});
-        this.props.$getAllNotifications(res => {});
       }
     }
 
-    if (prevProps.screamsData !== this.props.screamsData) {
+    if (prevProps.screamsData.screams !== this.props.screamsData.screams) {
       this.setState({ screams: this.props.screamsData.screams });
     }
   }
@@ -65,6 +67,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   $getAllScreams,
-  $getUserData,
-  $getAllNotifications
+  $getUserData
 })(Home);

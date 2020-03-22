@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -9,7 +11,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CommentIcon from "@material-ui/icons/Comment";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Link from "@material-ui/core/Link";
 import moment from "moment";
 import { connect, connectAdvanced } from "react-redux";
 import { $deleteScream } from "../network/screamAction";
@@ -43,15 +44,17 @@ class Scream extends Component {
       isLiked: "",
       deleteModal: false,
       detailDialog: false,
-      anchorEl: false
+      anchorEl: false,
+      oldPath: "",
+      newPath: ""
     };
   }
 
-  // const [likes, setLikes] = useState();
-  // const [isLiked, setIsLiked] = useState();
-  // const [deleteModal, setDeleteModal] = useState(false);
-  // const [detailDialog, setDetailDialog] = useState(false);
-  // const [anchorEl, setAnchorEl] = useState(null);
+  componentDidMount() {
+    if (this.props.openDialog && this.props.openDialog === true) {
+      this.setState({ detailDialog: true }, () => console.log("open diaglog"));
+    }
+  }
 
   deleteScreamHandler = () => {
     this.props.$deleteScream(this.props.screamId, res => {
@@ -67,6 +70,19 @@ class Scream extends Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  openDetailHandler = () => {
+    let oldPath = window.location.pathname;
+    const { userHandle, screamId } = this.props;
+    const newPath = `/users/${userHandle}/scream/${screamId}`;
+    this.setState({ detailDialog: true, oldPath: oldPath, newPath: newPath });
+    window.history.pushState(null, null, newPath);
+  };
+  closeDetailHandler = () => {
+    window.history.pushState(null, null, this.state.oldPath);
+    this.setState({ detailDialog: false, newPath: "" });
+  };
+
   render() {
     const {
       body,
@@ -77,7 +93,7 @@ class Scream extends Component {
       userImage,
       classes
     } = this.props;
-    const { isLiked, deleteModal, detailDialog, anchorEl } = this.state;
+    const { deleteModal, detailDialog, anchorEl } = this.state;
     return (
       <>
         <Card className={classes.root}>
@@ -89,8 +105,9 @@ class Scream extends Component {
               </IconButton>
             }
             title={
-              <Link
-                href={`/users/${userHandle}`}
+              <Typography
+                component={Link}
+                to={`/users/${userHandle}`}
                 color="inherit"
                 style={{
                   textDecoration: "none",
@@ -102,7 +119,7 @@ class Scream extends Component {
                 }}
               >
                 {userHandle}
-              </Link>
+              </Typography>
             }
             subheader={moment(createdAt).format("MMMM Do YYYY, h:mm:ss a")}
           />
@@ -115,7 +132,7 @@ class Scream extends Component {
             <MenuItem
               onClick={() => {
                 this.handleClose();
-                this.setState({ detailDialog: true });
+                this.openDetailHandler();
               }}
             >
               View Detail
@@ -141,8 +158,7 @@ class Scream extends Component {
             </Typography>
           </CardContent>
           <CardActions>
-            <Like screamId={this.props.screamId} likeCount={likeCount} />
-
+            <Like screamId={this.props.screamId} />
             <IconButton aria-label="comment" style={{ marginLeft: 20 }}>
               <CommentIcon color="primary" />
             </IconButton>
@@ -159,9 +175,8 @@ class Scream extends Component {
         {detailDialog && (
           <ScreamDialog
             status={detailDialog}
-            changeStatus={() => this.setState({ detailDialog: false })}
+            changeStatus={() => this.closeDetailHandler()}
             screamId={this.props.screamId}
-            likeCount={likeCount}
           />
         )}
       </>

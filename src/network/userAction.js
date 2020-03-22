@@ -6,7 +6,8 @@ import {
   SET_USER,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
-  USER_LOGOUT
+  USER_LOGOUT,
+  MARK_NOTIFICATION_READ
 } from "../store/types";
 
 export const $userLogin = (userData, success) => dispatch => {
@@ -98,11 +99,15 @@ export const $logoutUser = success => dispatch => {
   success();
 };
 
-// notifications
-export const $getAllNotifications = success => dispatch => {
+// mark notifications read
+export const $markNotificationsRead = (
+  notificationIDs,
+  success
+) => dispatch => {
   instance
-    .get(urlConst.notifications_url)
+    .post(urlConst.notifications_url, notificationIDs)
     .then(res => {
+      dispatch({ type: MARK_NOTIFICATION_READ });
       success(res);
     })
     .catch(err => {

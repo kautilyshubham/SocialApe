@@ -107,10 +107,7 @@ class ScreamDialog extends Component {
                     alignItems: "center"
                   }}
                 >
-                  <Like
-                    screamId={this.props.screamId}
-                    likeCount={this.props.likeCount}
-                  />
+                  <Like screamId={this.props.screamId} />
                 </div>
               )}
               <div style={{ display: "flex", alignItems: "center" }}>

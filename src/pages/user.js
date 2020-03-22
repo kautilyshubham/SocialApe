@@ -46,12 +46,15 @@ const useStyles = theme => ({
 class User extends Component {
   state = {
     user: {},
-    screams: []
+    screams: [],
+    screamIdParam: ""
   };
   componentDidMount() {
-    console.log(this.props);
+    const screamId = this.props.match.params.screamId;
+    if (screamId) {
+      this.setState({ screamIdParam: screamId });
+    }
     this.props.$getOtherProfile(this.props.match.params.handle, res => {
-      console.log(res, "profile data");
       this.setState({ user: res.user, screams: res.screams });
     });
   }
@@ -65,22 +68,35 @@ class User extends Component {
       website,
       createdAt
     } = this.state.user;
+
+    const { screamIdParam, screams, user } = this.state;
+
+    const screamRender =
+      screams === null ? (
+        <Typography component="p" color="textSecondary">
+          No post found
+        </Typography>
+      ) : !screamIdParam ? (
+        screams.map(scream => {
+          return <Scream key={scream.screamId} {...scream} />;
+        })
+      ) : (
+        screams.map(scream => {
+          if (scream.screamId !== screamIdParam) {
+            return <Scream key={scream.screamId} {...scream} />;
+          } else {
+            return (
+              <Scream key={scream.screamId} {...scream} openDialog={true} />
+            );
+          }
+        })
+      );
+
     return (
       <div>
         <Grid container spacing={3}>
           <Grid item sm={8} xs={12}>
-            {this.props.isLoading ||
-            (this.state.screams && this.state.screams.length) ? (
-              <>
-                {this.state.screams.map(scream => {
-                  return <Scream key={scream.screamId} {...scream} />;
-                })}
-              </>
-            ) : (
-              <Typography component="p" color="textSecondary">
-                No post found
-              </Typography>
-            )}
+            {screamRender}
           </Grid>
           <Grid item sm={4} xs={12}>
             <Card className={classes.root}>

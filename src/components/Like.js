@@ -8,11 +8,13 @@ import Typography from "@material-ui/core/Typography";
 
 class Like extends Component {
   state = {
-    isLiked: ""
+    isLiked: "",
+    likesCount: ""
   };
 
   componentDidMount() {
     const isLiked = this.checkLiked();
+    this.setScreamLikeCount();
     this.setState({ isLiked: isLiked });
   }
 
@@ -20,6 +22,11 @@ class Like extends Component {
     if (prevProps.userData.likes !== this.props.userData.likes) {
       const isLiked = this.checkLiked();
       this.setState({ isLiked: isLiked });
+    }
+    if (
+      JSON.stringify(prevProps.screams) !== JSON.stringify(this.props.screams)
+    ) {
+      this.setScreamLikeCount();
     }
   }
 
@@ -36,13 +43,32 @@ class Like extends Component {
     }
   };
 
+  setScreamLikeCount = () => {
+    let screams = this.props.screams;
+    if (screams) {
+      const index = screams.findIndex(
+        scream => scream.screamId === this.props.screamId
+      );
+      if (index !== -1) {
+        const likeCount = screams[index].likeCount;
+        this.setState({ likesCount: likeCount });
+      }
+    }
+  };
+
   likeClickHandler = () => {
     if (this.props.authenticated) {
       const isLiked = this.checkLiked();
       if (!isLiked) {
-        this.props.$likeScream(this.props.screamId, res => {});
+        this.props.$likeScream(this.props.screamId, res => {
+          this.setScreamLikeCount();
+          console.log(this.props.screams, "screams");
+        });
       } else {
-        this.props.$unlikeScream(this.props.screamId, res => {});
+        this.props.$unlikeScream(this.props.screamId, res => {
+          this.setScreamLikeCount();
+          console.log(this.props.screams, "screams");
+        });
       }
     } else {
       alert("You are not logged in.");
@@ -50,7 +76,7 @@ class Like extends Component {
   };
 
   render() {
-    const { isLiked } = this.state;
+    const { isLiked, likesCount } = this.state;
     return (
       <>
         <IconButton
@@ -64,7 +90,7 @@ class Like extends Component {
           )}
         </IconButton>
         <Typography variant="body2" color="textSecondary" component="p">
-          {this.props.likeCount} Likes
+          {likesCount} Likes
         </Typography>
       </>
     );
@@ -74,6 +100,7 @@ class Like extends Component {
 const mapStateToProps = state => {
   return {
     userData: state.user,
+    screams: state.scream.screams,
     authenticated: state.user.authenticated
   };
 };

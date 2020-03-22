@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import {
   Card,
   Avatar,
   IconButton,
   Button,
-  Link,
-  Tooltip
+  Tooltip,
+  Link as Anchor
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -113,14 +115,15 @@ const Profile = props => {
             />
           </Badge>
           <CardContent>
-            <Link
+            <Typography
               gutterBottom
               component={Link}
-              href={`/user/${handle}`}
+              to={`/users/${handle}`}
               variant="h5"
+              color="primary"
             >
               {handle}
-            </Link>
+            </Typography>
             {bio && <Typography component="p">{bio}</Typography>}
             {location && (
               <div className="profile_desc">
@@ -137,14 +140,14 @@ const Profile = props => {
                 <IconButton aria-label="edit">
                   <LanguageIcon color="primary" fontSize="small" />
                 </IconButton>
-                <Link
+                <Anchor
                   href={website}
                   className={classes.title}
                   rel="noopener noreferrer"
                   color="textSecondary"
                 >
                   {website}
-                </Link>
+                </Anchor>
               </div>
             )}
             {createdAt && (
@@ -180,7 +183,7 @@ const Profile = props => {
             component={Link}
             varient="contained"
             color="primary"
-            href="/login"
+            to="/login"
           >
             Login
           </Button>
@@ -188,7 +191,7 @@ const Profile = props => {
             component={Link}
             varient="contained"
             color="secondary"
-            href="/signup"
+            to="/signup"
           >
             Signup
           </Button>

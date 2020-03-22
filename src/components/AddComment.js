@@ -17,16 +17,20 @@ const AddComment = props => {
   };
 
   const postCommentHandler = () => {
-    if (postText) {
-      let commentData = {
-        body: postText
-      };
-      props.$addComment(screamId, commentData, res => {
-        setError(false);
-        setPostText("");
-      });
+    if (props.authenticated) {
+      if (postText) {
+        let commentData = {
+          body: postText
+        };
+        props.$addComment(screamId, commentData, res => {
+          setError(false);
+          setPostText("");
+        });
+      } else {
+        setError(true);
+      }
     } else {
-      setError(true);
+      alert("You are not logged in");
     }
   };
 
@@ -57,4 +61,10 @@ const AddComment = props => {
   );
 };
 
-export default connect(null, { $addComment })(AddComment);
+const mapStateToProps = state => {
+  return {
+    authenticated: state.user.authenticated
+  };
+};
+
+export default connect(mapStateToProps, { $addComment })(AddComment);

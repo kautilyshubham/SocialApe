@@ -13,20 +13,36 @@ import HomeIcon from "@material-ui/icons/Home";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PostScream from "./PostScream";
 import Badge from "@material-ui/core/Badge";
+import Notifications from "./Notifications";
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
   }
   state = {
-    isPostScream: false
+    isPostScream: false,
+    anchorEl: null
   };
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     return (
       <>
         <AppBar>
           <Toolbar style={{ width: "90%", margin: "0 auto" }}>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
+            <Typography
+              component={Link}
+              to="/"
+              variant="h6"
+              style={{ flexGrow: 1, color: "white", textDecoration: "none" }}
+            >
               SocialApe
             </Typography>
             {this.props.authenticated ? (
@@ -37,16 +53,17 @@ class Navbar extends Component {
                     onClick={() => {
                       this.setState({ isPostScream: true });
                     }}
-                    aria-label="share"
+                    aria-label="post"
                   >
                     <AddIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Home">
                   <IconButton
+                    component={Link}
+                    to="/"
                     style={{ color: "#fff" }}
-                    onClick={() => {}}
-                    aria-label="share"
+                    aria-label="home"
                   >
                     <HomeIcon fontSize="small" />
                   </IconButton>
@@ -54,8 +71,10 @@ class Navbar extends Component {
                 <Tooltip title="Notifications">
                   <IconButton
                     style={{ color: "#fff" }}
-                    onClick={() => {}}
-                    aria-label="share"
+                    onClick={e => {
+                      this.handleClick(e);
+                    }}
+                    aria-label="notification"
                   >
                     <Badge
                       badgeContent={
@@ -69,6 +88,11 @@ class Navbar extends Component {
                     </Badge>
                   </IconButton>
                 </Tooltip>
+                <Notifications
+                  notifications={this.props.notifications}
+                  anchorEl={this.state.anchorEl}
+                  handleClose={this.handleClose}
+                />
               </div>
             ) : (
               <div className="navbar_right">

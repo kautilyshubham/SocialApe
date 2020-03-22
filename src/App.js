@@ -4,7 +4,6 @@ import "./App.css";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import PropsTypes from "prop-types";
-
 // page and compoentns
 import Home from "./pages/home";
 import Login from "./pages/login";
@@ -17,6 +16,7 @@ import AuthRoute from "./utils/AuthRoute";
 import Loader from "./utils/Loader";
 import { connect } from "react-redux";
 import { SET_AUTHENTICATED } from "./store/types";
+import { $getUserData } from "./network/userAction";
 
 const theme = createMuiTheme(Mytheme);
 
@@ -38,6 +38,7 @@ function App(props) {
     const token = localStorage.getItem("FBToken");
     if (token) {
       props.setAuthenticated();
+      props.getUserData(res => {});
     }
   });
   return (
@@ -83,7 +84,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuthenticated: () => dispatch({ type: SET_AUTHENTICATED })
+    setAuthenticated: () => dispatch({ type: SET_AUTHENTICATED }),
+    getUserData: () => dispatch($getUserData)
   };
 };
 
