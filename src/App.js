@@ -38,7 +38,7 @@ function App(props) {
     const token = localStorage.getItem("FBToken");
     if (token) {
       props.setAuthenticated();
-      props.getUserData(res => {});
+      props.getUserData((res) => {});
     }
   });
   return (
@@ -47,24 +47,22 @@ function App(props) {
       <div className="App">
         <Router>
           <Navbar />
-          <div className="container">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <AuthRoute
-                exact
-                path="/login"
-                component={Login}
-                authenticated={props.authenticated}
-              />
-              <AuthRoute
-                exact
-                path="/signup"
-                component={Signup}
-                authenticated={props.authenticated}
-              />
-              <Route exact path="/users/:handle" component={User} />
-            </Switch>
-          </div>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <AuthRoute
+              exact
+              path="/login"
+              component={Login}
+              authenticated={props.authenticated}
+            />
+            <AuthRoute
+              exact
+              path="/signup"
+              component={Signup}
+              authenticated={props.authenticated}
+            />
+            <Route exact path="/users/:handle" component={User} />
+          </Switch>
         </Router>
       </div>
     </MuiThemeProvider>
@@ -72,20 +70,20 @@ function App(props) {
 }
 
 AuthRoute.prototype = {
-  user: PropsTypes.object.isRequired
+  user: PropsTypes.object.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     authenticated: state.user.authenticated,
-    isLoading: state.UI.loading
+    isLoading: state.UI.loading,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setAuthenticated: () => dispatch({ type: SET_AUTHENTICATED }),
-    getUserData: () => dispatch($getUserData)
+    getUserData: () => dispatch($getUserData),
   };
 };
 

@@ -9,7 +9,7 @@ import { $userSignup } from "../network/userAction";
 import {
   isEmailValid,
   isValidPassword,
-  isEmpty
+  isEmpty,
 } from "../utils/globalFunctions";
 import { connect } from "react-redux";
 
@@ -19,7 +19,7 @@ class Signup extends Component {
     password: "",
     handle: "",
     error: {},
-    type: "password"
+    type: "password",
   };
 
   changeTypeHandler = () => {
@@ -67,10 +67,10 @@ class Signup extends Component {
       email: this.state.email,
       password: this.state.password,
       confirmPassword: this.state.password,
-      handle: this.state.handle
+      handle: this.state.handle,
     };
     if (isValid) {
-      this.props.$userSignup(data, res => {
+      this.props.$userSignup(data, (res) => {
         console.log(res, "signup");
         this.props.history.push("/");
       });
@@ -79,86 +79,79 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="main_container">
-        <div className="login_container">
-          <div className="login_bnr">
-            <img src="/img/login-bnr.jpeg" alt="" />
+      <div className="login_page">
+        <div className="login_form_box">
+          <h2 className="heading" style={{ textAlign: "center" }}>
+            Register to SocialApe
+          </h2>
+          <div className="form_group">
+            <label htmlFor="email">Email</label>
+            <div className="input_group">
+              <input
+                type="email"
+                className="input-control"
+                required
+                placeholder="Email"
+                onChange={(e) =>
+                  this.textChangeHandler("email", e.target.value)
+                }
+              />
+            </div>
+            <p>
+              {this.state.error["email"] ? this.state.error["email"] : null}
+            </p>
           </div>
-          <div className="login_form_box">
-            <h2 className="heading" style={{ textAlign: "center" }}>
-              Register to SocialApe
-            </h2>
-            <form action="">
-              <div className="form_group">
-                <div className="input_group">
-                  <input
-                    type="email"
-                    className="input-control"
-                    required
-                    placeholder="Email"
-                    onChange={e =>
-                      this.textChangeHandler("email", e.target.value)
-                    }
-                  />
-                </div>
-                <p>
-                  {this.state.error["email"] ? this.state.error["email"] : null}
-                </p>
-              </div>
-              <div className="form_group">
-                <div className="input_group">
-                  <input
-                    type={this.state.type}
-                    className="input-control"
-                    required
-                    placeholder="Password"
-                    onChange={e =>
-                      this.textChangeHandler("password", e.target.value)
-                    }
-                  />
-                  <IconButton onClick={() => this.changeTypeHandler()}>
-                    {this.state.type === "password" ? (
-                      <VisibilityOff />
-                    ) : (
-                      <Visibility />
-                    )}
-                  </IconButton>
-                </div>
-                <p>
-                  {this.state.error["password"]
-                    ? this.state.error["password"]
-                    : null}
-                </p>
-              </div>
-              <div className="form_group">
-                <div className="input_group">
-                  <input
-                    type="text"
-                    className="input-control"
-                    required
-                    placeholder="Handle"
-                    onChange={e =>
-                      this.textChangeHandler("handle", e.target.value)
-                    }
-                  />
-                </div>
-                <p>
-                  {this.state.error["handle"]
-                    ? this.state.error["handle"]
-                    : null}
-                </p>
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => this.onSubmitHandler()}
-              >
-                Register now
-              </Button>
-              <div>
-                <Link href="/login">Already have account?</Link>
-              </div>
-            </form>
+          <div className="form_group">
+            <label htmlFor="Password">Password</label>
+            <div className="input_group">
+              <input
+                type={this.state.type}
+                className="input-control"
+                required
+                placeholder="Password"
+                onChange={(e) =>
+                  this.textChangeHandler("password", e.target.value)
+                }
+              />
+              <IconButton onClick={() => this.changeTypeHandler()}>
+                {this.state.type === "password" ? (
+                  <VisibilityOff />
+                ) : (
+                  <Visibility />
+                )}
+              </IconButton>
+            </div>
+            <p>
+              {this.state.error["password"]
+                ? this.state.error["password"]
+                : null}
+            </p>
+          </div>
+          <div className="form_group">
+            <label htmlFor="handle">Handler</label>
+            <div className="input_group">
+              <input
+                type="text"
+                className="input-control"
+                required
+                placeholder="Handle"
+                onChange={(e) =>
+                  this.textChangeHandler("handle", e.target.value)
+                }
+              />
+            </div>
+            <p>
+              {this.state.error["handle"] ? this.state.error["handle"] : null}
+            </p>
+          </div>
+          <div className="login_btns">
+            <button
+              className="login_btn"
+              onClick={() => this.onSubmitHandler()}
+            >
+              Register
+            </button>
+            <Link href="/login">Already have account?</Link>
           </div>
         </div>
       </div>

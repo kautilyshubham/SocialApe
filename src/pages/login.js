@@ -8,6 +8,7 @@ import { $userLogin } from "../network/userAction";
 import { connect } from "react-redux";
 import { ShowToast } from "../components/Toster";
 import keyConst from "../network/keyConst";
+import "../styles/login.scss";
 
 class Login extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Login extends Component {
     email: "",
     password: "",
     error: {},
-    type: "password"
+    type: "password",
   };
 
   componentDidMount() {
@@ -63,10 +64,10 @@ class Login extends Component {
     const isValid = this.checkError();
     const loginData = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     if (isValid) {
-      this.props.$userLogin(loginData, res => {
+      this.props.$userLogin(loginData, (res) => {
         ShowToast(keyConst.TOAST_SUCCESS, "Login successfull!");
         this.props.history.push("/");
       });
@@ -75,69 +76,63 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="main_container">
-        <div className="login_container">
-          <div className="login_bnr">
-            <img src="/img/login-bnr.jpeg" alt="" />
+      <div className="login_page">
+        <div className="login_form_box">
+          <h2 className="heading" style={{ textAlign: "center" }}>
+            Login to SocialApe
+          </h2>
+          <div className="form_group">
+            <label htmlFor="email">Email</label>
+            <div className="input_group">
+              <input
+                type="email"
+                className="input-control"
+                value={this.state.email}
+                placeholder="Email"
+                ref={this.emailRef}
+                onChange={(e) =>
+                  this.textChangeHandler("email", e.target.value)
+                }
+              />
+            </div>
+            <p>
+              {this.state.error["email"] ? this.state.error["email"] : null}
+            </p>
           </div>
-          <div className="login_form_box">
-            <h2 className="heading" style={{ textAlign: "center" }}>
-              Login to SocialApe
-            </h2>
-            <form>
-              <div className="form_group">
-                <div className="input_group">
-                  <input
-                    type="email"
-                    className="input-control"
-                    value={this.state.email}
-                    placeholder="Email"
-                    ref={this.emailRef}
-                    onChange={e =>
-                      this.textChangeHandler("email", e.target.value)
-                    }
-                  />
-                </div>
-                <p>
-                  {this.state.error["email"] ? this.state.error["email"] : null}
-                </p>
-              </div>
-              <div className="form_group">
-                <div className="input_group">
-                  <input
-                    type={this.state.type}
-                    className="input-control"
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChange={e =>
-                      this.textChangeHandler("password", e.target.value)
-                    }
-                  />
-                  <IconButton onClick={() => this.changeTypeHandler()}>
-                    {this.state.type === "password" ? (
-                      <VisibilityOff />
-                    ) : (
-                      <Visibility />
-                    )}
-                  </IconButton>
-                </div>
-                <p>
-                  {this.state.error["password"]
-                    ? this.state.error["password"]
-                    : null}
-                </p>
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => this.onSubmitHandler()}
-              >
-                Login
-              </Button>
-              <div>
-                <Link href="/signup">Don't have account?</Link>
-              </div>
-            </form>
+          <div className="form_group">
+            <label htmlFor="email">Password</label>
+            <div className="input_group">
+              <input
+                type={this.state.type}
+                className="input-control"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={(e) =>
+                  this.textChangeHandler("password", e.target.value)
+                }
+              />
+              <IconButton onClick={() => this.changeTypeHandler()}>
+                {this.state.type === "password" ? (
+                  <VisibilityOff />
+                ) : (
+                  <Visibility />
+                )}
+              </IconButton>
+            </div>
+            <p>
+              {this.state.error["password"]
+                ? this.state.error["password"]
+                : null}
+            </p>
+          </div>
+          <div className="login_btns">
+            <button
+              className="login_btn"
+              onClick={() => this.onSubmitHandler()}
+            >
+              Login
+            </button>
+            <Link href="/signup">Don't have account?</Link>
           </div>
         </div>
       </div>
