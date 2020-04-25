@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { ShowToast } from "../components/Toster";
 import keyConst from "../network/keyConst";
 import "../styles/login.scss";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class Login extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class Login extends Component {
     password: "",
     error: {},
     type: "password",
+    isLoading: false,
   };
 
   componentDidMount() {
@@ -67,7 +69,9 @@ class Login extends Component {
       password: this.state.password,
     };
     if (isValid) {
+      this.setState({ isLoading: true });
       this.props.$userLogin(loginData, (res) => {
+        this.setState({ isLoading: false });
         ShowToast(keyConst.TOAST_SUCCESS, "Login successfull!");
         this.props.history.push("/");
       });
@@ -126,12 +130,19 @@ class Login extends Component {
             </p>
           </div>
           <div className="login_btns">
-            <button
-              className="login_btn"
-              onClick={() => this.onSubmitHandler()}
-            >
-              Login
-            </button>
+            {this.state.isLoading ? (
+              <CircularProgress
+                color="primary"
+                style={{ height: "20px", width: "20px" }}
+              />
+            ) : (
+              <button
+                className="login_btn"
+                onClick={() => this.onSubmitHandler()}
+              >
+                Login
+              </button>
+            )}
             <Link href="/signup">Don't have account?</Link>
           </div>
         </div>

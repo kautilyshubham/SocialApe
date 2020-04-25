@@ -107,7 +107,7 @@ input:-webkit-autofill:active {
   justify-items: center;
 }
 
-.MuiCircularProgress-root {
+.overlay .MuiCircularProgress-root {
   position: absolute;
   right: 50px;
   bottom: 50px;

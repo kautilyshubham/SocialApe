@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -12,10 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import CommentIcon from "@material-ui/icons/Comment";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import moment from "moment";
-import { connect, connectAdvanced } from "react-redux";
+import { connect } from "react-redux";
 import { $deleteScream } from "../network/screamAction";
-import { useEffect } from "react";
-import { useState } from "react";
 import DeleteScream from "./DeleteScream";
 import keyConst from "../network/keyConst";
 import { ShowToast } from "./Toster";
@@ -23,18 +21,19 @@ import ScreamDialog from "./ScreamDialog";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Like from "./Like";
+import { Icon } from "@material-ui/core";
 
-const useStyles = theme => ({
+const useStyles = (theme) => ({
   root: {
     maxWidth: "90%",
-    marginBottom: "30px"
+    marginBottom: "30px",
   },
   media: {
-    height: 240
+    height: 240,
   },
   avatar: {
-    backgroundColor: "#e91e63"
-  }
+    backgroundColor: "#e91e63",
+  },
 });
 
 class Scream extends Component {
@@ -46,7 +45,7 @@ class Scream extends Component {
       detailDialog: false,
       anchorEl: false,
       oldPath: "",
-      newPath: ""
+      newPath: "",
     };
   }
 
@@ -57,13 +56,13 @@ class Scream extends Component {
   }
 
   deleteScreamHandler = () => {
-    this.props.$deleteScream(this.props.screamId, res => {
+    this.props.$deleteScream(this.props.screamId, (res) => {
       this.setState({ deleteModal: false });
       ShowToast(keyConst.TOAST_SUCCESS, "Post deleted successfully!");
     });
   };
 
-  handleClick = event => {
+  handleClick = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -91,7 +90,7 @@ class Scream extends Component {
       commentCount,
       likeCount,
       userImage,
-      classes
+      classes,
     } = this.props;
     const { deleteModal, detailDialog, anchorEl } = this.state;
     return (
@@ -115,13 +114,13 @@ class Scream extends Component {
                   textTransform: "capitalize",
                   fontSize: 17,
                   fontWeight: 500,
-                  cursor: "pointer"
+                  cursor: "pointer",
                 }}
               >
                 {userHandle}
               </Typography>
             }
-            subheader={moment(createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+            subheader={moment(createdAt).format("MMMM Do YYYY, h:mm a")}
           />
           <Menu
             id="simple-menu"
@@ -159,9 +158,9 @@ class Scream extends Component {
           </CardContent>
           <CardActions>
             <Like screamId={this.props.screamId} />
-            <IconButton aria-label="comment" style={{ marginLeft: 20 }}>
+            <Icon aria-label="comment" style={{ marginLeft: 20 }}>
               <CommentIcon color="primary" />
-            </IconButton>
+            </Icon>
             <Typography variant="body2" color="textSecondary" component="p">
               {commentCount} Comments
             </Typography>
@@ -184,15 +183,15 @@ class Scream extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userData: state.user,
-    authenticated: state.user.authenticated
+    authenticated: state.user.authenticated,
   };
 };
 
 export default withStyles(useStyles)(
   connect(mapStateToProps, {
-    $deleteScream
+    $deleteScream,
   })(Scream)
 );

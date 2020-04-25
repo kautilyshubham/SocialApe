@@ -1,16 +1,19 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: "https://asia-east2-socialape-e9c44.cloudfunctions.net/api/"
+  baseURL: "https://asia-east2-socialape-e9c44.cloudfunctions.net/api/",
 });
 
 // Error handlers
-const errorHandler = err => {
+const errorHandler = (err) => {
   console.log(err);
+  if (err.status.code === 403) {
+    console.log("403");
+  }
 };
 
 // Success handlers
-const successHandler = res => {
+const successHandler = (res) => {
   console.log("RESPONSE =>", res);
   return res;
 };
@@ -18,7 +21,7 @@ const successHandler = res => {
 // Interceptors
 //////////////////////////////
 
-instance.interceptors.request.use(request => {
+instance.interceptors.request.use((request) => {
   const token = localStorage.getItem("FBToken");
   console.log("REQUEST =>", request);
   if (token) {
@@ -29,8 +32,8 @@ instance.interceptors.request.use(request => {
 });
 
 instance.interceptors.response.use(
-  response => successHandler(response),
-  error => {
+  (response) => successHandler(response),
+  (error) => {
     errorHandler(error);
     return Promise.reject(error);
   }

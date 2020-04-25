@@ -3,9 +3,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Button, Link } from "@material-ui/core";
-import axios from "axios";
-import keyConst from "../network/keyConst";
 import { $userSignup } from "../network/userAction";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import {
   isEmailValid,
   isValidPassword,
@@ -20,6 +20,7 @@ class Signup extends Component {
     handle: "",
     error: {},
     type: "password",
+    isLoading: false,
   };
 
   changeTypeHandler = () => {
@@ -70,8 +71,10 @@ class Signup extends Component {
       handle: this.state.handle,
     };
     if (isValid) {
+      this.setState({ isLoading: true });
       this.props.$userSignup(data, (res) => {
         console.log(res, "signup");
+        this.setState({ isLoading: false });
         this.props.history.push("/");
       });
     }
@@ -145,12 +148,19 @@ class Signup extends Component {
             </p>
           </div>
           <div className="login_btns">
-            <button
-              className="login_btn"
-              onClick={() => this.onSubmitHandler()}
-            >
-              Register
-            </button>
+            {this.state.isLoading ? (
+              <CircularProgress
+                color="primary"
+                style={{ height: "20px", width: "20px" }}
+              />
+            ) : (
+              <button
+                className="login_btn"
+                onClick={() => this.onSubmitHandler()}
+              >
+                Register
+              </button>
+            )}
             <Link href="/login">Already have account?</Link>
           </div>
         </div>
