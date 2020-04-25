@@ -7,7 +7,7 @@ import {
   IconButton,
   Button,
   Tooltip,
-  Link as Anchor
+  Link as Anchor,
 } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -27,7 +27,7 @@ import keyConst from "../network/keyConst";
 import { ShowToast } from "./Toster";
 import EditProfile from "./EditProfile";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 400,
     textAlign: "center",
@@ -36,28 +36,28 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     padding: 45,
     "& > *": {
-      margin: theme.spacing(1)
+      margin: theme.spacing(1),
     },
     position: "sticky",
-    top: "80px"
+    top: "80px",
   },
   large: {
     width: theme.spacing(20),
-    height: theme.spacing(20)
+    height: theme.spacing(20),
   },
   title: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }));
 
-const Profile = props => {
+const Profile = (props) => {
   const {
     handle,
     imageUrl,
     bio,
     location,
     website,
-    createdAt
+    createdAt,
   } = props.userData[keyConst.CREDENTIALS];
   const classes = useStyles();
 
@@ -68,17 +68,17 @@ const Profile = props => {
     fileInput.click();
   };
 
-  const handleImageChange = event => {
+  const handleImageChange = (event) => {
     const image = event.target.files[0];
     console.log(image);
 
     const formData = new FormData();
     formData.append("image", image, image.name);
-    props.$uploadProfileImage(formData, res => console.log(res));
+    props.$uploadProfileImage(formData, (res) => console.log(res));
   };
 
   const handleLogout = () => {
-    props.$logoutUser(success => {
+    props.$logoutUser((success) => {
       ShowToast(keyConst.TOAST_SUCCESS, "Logout successfull !");
     });
   };
@@ -93,7 +93,7 @@ const Profile = props => {
 
   return (
     <>
-      {handle || props.isLoading ? (
+      {handle && props.isLoading === false ? (
         <Card className={classes.root}>
           <Badge
             badgeContent={
@@ -109,7 +109,7 @@ const Profile = props => {
               type="file"
               name="profiel"
               id="profileImg"
-              onChange={e => handleImageChange(e)}
+              onChange={(e) => handleImageChange(e)}
               hidden
               accept="image/png, image/jpeg"
             />
@@ -203,10 +203,10 @@ const Profile = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userData: state.user,
-    isLoading: state.UI.loading
+    isLoading: state.UI.loading,
   };
 };
 
